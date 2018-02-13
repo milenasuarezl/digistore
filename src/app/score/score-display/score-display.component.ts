@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScoreDisplayComponent implements OnInit {
 
-  constructor() { }
+  score: number;
+
+  constructor() {
+  }
 
   ngOnInit() {
+    this.score = 0;
+
+    setInterval(() => {
+      this.score += 35;
+    }, 300);
   }
 
 }

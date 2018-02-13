@@ -1,0 +1,9 @@
+.attempts-container {
+  width: 330px;
+  background: whitesmoke;
+  padding: 10px;
+}
+
+.attempt {
+  width: 300px;
+}

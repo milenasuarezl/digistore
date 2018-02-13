@@ -7,7 +7,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AttemptsRegisterComponent implements OnInit {
 
-  constructor() { }
+  attempts = [{
+    control: 'UP',
+    result: 'OK',
+    icon: 'arrow_upward'
+  }, {
+    control: 'RIGHT',
+    result: 'OK',
+    icon: 'arrow_forward'
+  }, {
+    control: 'DOWN',
+    result: 'WRONG',
+    icon: 'arrow_downward'
+  }, {
+    control: 'LEFT',
+    result: 'OK',
+    icon: 'arrow_back'
+  }, {
+    control: 'UP',
+    result: 'OK',
+    icon: 'arrow_upward'
+  }];
+
+  constructor() {
+  }
 
   ngOnInit() {
   }
