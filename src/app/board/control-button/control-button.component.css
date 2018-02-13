@@ -1,0 +1,7 @@
+.mat-fab.mat-accent.pressed {
+  border: 2px solid lightseagreen;
+}
+
+.mat-fab.mat-accent.active {
+  background: yellow;
+}

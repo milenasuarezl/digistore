@@ -2,17 +2,24 @@
   <mat-card fxFlexFill fxLayout="column" class="mat-elevation-z8">
     <div class="control-grid" fxLayoutWrap="wrap">
       <div fxFlex="33%" fxLayoutAlign="center center"></div>
-      <div fxFlex="33%" fxLayoutAlign="center center"><app-control-button></app-control-button></div>
+      <div fxFlex="33%" fxLayoutAlign="center center" #upArrow><app-control-button></app-control-button></div>
       <div fxFlex="33%" fxLayoutAlign="center center"></div>
 
-      <div fxFlex="33%" fxLayoutAlign="center center"><app-control-button></app-control-button></div>
+      <div fxFlex="33%" fxLayoutAlign="center center" #leftArrow><app-control-button></app-control-button></div>
       <div fxFlex="33%" fxLayoutAlign="center center"><img src="./assets/images/logodf.jpg" width="65%"></div>
-      <div fxFlex="33%" fxLayoutAlign="center center"><app-control-button></app-control-button></div>
+      <div fxFlex="33%" fxLayoutAlign="center center" #rightArrow><app-control-button></app-control-button></div>
 
       <div fxFlex="33%" fxLayoutAlign="center center"></div>
-      <div fxFlex="33%" fxLayoutAlign="center center"><app-control-button></app-control-button></div>
+      <div fxFlex="33%" fxLayoutAlign="center center" #downArrow><app-control-button></app-control-button></div>
       <div fxFlex="33%" fxLayoutAlign="center center"></div>
     </div>
-    <button mat-button mat-raised-button color="accent">START</button>
+    <button mat-button mat-raised-button color="accent" (click)="onStartGame()">START</button>
   </mat-card>
 </div>
+
+<!-- loading sounds -->
+<audio src="assets/sounds/start_game.mp3" id="start_game" #startGameSound></audio>
+<audio src="assets/sounds/good.mp3" id="good" #goodSound></audio>
+<audio src="assets/sounds/laser.mp3" id="laser" #laserSound></audio>
+<audio src="assets/sounds/game_over.mp3" id="game_over" #gameOverSound></audio>
+
