@@ -1,4 +1,8 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { State } from '../../app.reducer';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-control-container',
@@ -18,6 +22,9 @@ export class ControlContainerComponent implements OnInit {
   @ViewChild('leftArrow') leftArrow;
   @ViewChild('rightArrow') rightArrow;
   @ViewChild('downArrow') downArrow;
+  // Variables in View
+  isPlaying: Observable<boolean>;
+  interval;
 
   // Constants
   private readonly TIME_DELAY_PRESS = 200;
@@ -25,11 +32,11 @@ export class ControlContainerComponent implements OnInit {
   private readonly TIME_UPDATE_COLOR = 1000;
   private readonly TIME_TO_START_GAME = 3000;
 
-  constructor() {
+  constructor(private store: Store<{ game: State }>) {
   }
 
   ngOnInit() {
-
+    this.isPlaying = this.store.pipe(map(state => state.game.isPlaying));
   }
 
   public onStartGame(): void {
@@ -47,7 +54,6 @@ export class ControlContainerComponent implements OnInit {
         break;
 
       case KEY_CODE.LEFT_ARROW:
-        this.sayGood();
         this.pressButtonEffect(this.leftArrow, 'pressed', this.TIME_DELAY_PRESS);
         break;
 
@@ -63,16 +69,22 @@ export class ControlContainerComponent implements OnInit {
     }
   }
 
-  private startGame() {
-    this.startGameSound.nativeElement.play();
-    setTimeout( () => this.generateRandomControl(), this.TIME_TO_START_GAME);
+  public onStopGame() {
+    this.store.dispatch({type: 'STOP_PLAYING'});
+    clearInterval(this.interval);
+  }
 
+  private startGame() {
+    this.store.dispatch({type: 'START_PLAYING'});
+    this.startGameSound.nativeElement.play();
+    setTimeout(() => this.generateRandomControl(), this.TIME_TO_START_GAME);
   }
 
   private generateRandomControl() {
     const controls = [this.upArrow, this.leftArrow, this.rightArrow, this.downArrow];
 
-    setInterval(() => {
+    this.interval = setInterval(() => {
+      this.sayGood();
       const indexRandom = Math.round(Math.random() * (controls.length - 1));
       const control = controls[indexRandom];
       this.pressButtonEffect(control, 'active', this.TIME_DELAY_COLOR);

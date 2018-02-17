@@ -1,11 +1,20 @@
-import {Component, OnInit} from "@angular/core";
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { State } from '../../app.reducer';
 
 @Component({
-  selector: "app-main-board",
-  templateUrl: "./main-board.component.html",
-  styleUrls: ["./main-board.component.css"]
+  selector: 'app-main-board',
+  templateUrl: './main-board.component.html',
+  styleUrls: ['./main-board.component.css']
 })
 export class MainBoardComponent implements OnInit {
+  constructor(private store: Store<State>) {
+  }
+
   ngOnInit(): void {
+    this.store.subscribe((data) => {
+      console.log('Data in the store: ');
+      console.log(data);
+    });
   }
 }

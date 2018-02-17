@@ -13,7 +13,8 @@
       <div fxFlex="33%" fxLayoutAlign="center center" #downArrow><app-control-button></app-control-button></div>
       <div fxFlex="33%" fxLayoutAlign="center center"></div>
     </div>
-    <button mat-button mat-raised-button color="accent" (click)="onStartGame()">START</button>
+    <button mat-button mat-raised-button color="accent" (click)="onStartGame()" *ngIf="!(isPlaying | async)">START</button>
+    <button mat-button mat-raised-button color="primary" (click)="onStopGame()" *ngIf="(isPlaying | async)">STOP</button>
   </mat-card>
 </div>
 

@@ -5,6 +5,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BoardModule } from './board/board.module';
 import { ScoreModule } from './score/score.module';
+import { StoreModule } from '@ngrx/store';
+import { appReducer } from './app.reducer';
 
 
 @NgModule({
@@ -14,7 +16,8 @@ import { ScoreModule } from './score/score.module';
   imports: [
     BrowserModule,
     BoardModule,
-    ScoreModule
+    ScoreModule,
+    StoreModule.forRoot({game: appReducer})
   ],
   providers: [],
   bootstrap: [AppComponent]
