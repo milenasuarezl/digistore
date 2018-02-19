@@ -11,6 +11,10 @@ export interface State {
   }>;
 }
 
+export interface ScoreState {
+  score: number;
+}
+
 export const initialState: State = {
   isPlaying: false,
   score: 0,

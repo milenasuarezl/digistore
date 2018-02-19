@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { ScoreState } from './app.reducer';
 
 export const START_PLAYING = 'START_PLAYING';
 export const STOP_PLAYING = 'STOP_PLAYING';
@@ -15,6 +16,9 @@ export class StopPlaying implements Action {
 
 export class AddScore implements Action {
   readonly type = ADD_SCORE;
+
+  constructor(public payload: ScoreState) {
+  }
 }
 
 export class AddAttempt implements Action {
