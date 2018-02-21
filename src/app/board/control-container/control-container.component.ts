@@ -1,8 +1,8 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '../../app.reducer';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
+import * as fromStore from '../../store';
 
 @Component({
   selector: 'app-control-container',
@@ -23,7 +23,7 @@ export class ControlContainerComponent implements OnInit {
   @ViewChild('rightArrow') rightArrow;
   @ViewChild('downArrow') downArrow;
   // Variables in View
-  isPlaying: Observable<boolean>;
+  isPlaying$: Observable<boolean>;
   interval;
 
   // Constants
@@ -32,11 +32,11 @@ export class ControlContainerComponent implements OnInit {
   private readonly TIME_UPDATE_COLOR = 1000;
   private readonly TIME_TO_START_GAME = 3000;
 
-  constructor(private store: Store<{ game: State }>) {
+  constructor(private store: Store<fromStore.ApplicationState>) {
   }
 
   ngOnInit() {
-    this.isPlaying = this.store.pipe(map(state => state.game.isPlaying));
+    this.isPlaying$ = this.store.pipe(map(state => state.ui.isPlaying));
   }
 
   public onStartGame(): void {
