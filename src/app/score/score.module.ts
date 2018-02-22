@@ -8,8 +8,7 @@ import { StoreModule } from '@ngrx/store';
 @NgModule({
   imports: [
     CommonModule,
-    SharedModule,
-    StoreModule.forFeature('score', {})
+    SharedModule
   ],
   declarations: [ScoreDisplayComponent, AttemptsRegisterComponent],
   exports: [ScoreDisplayComponent, AttemptsRegisterComponent]

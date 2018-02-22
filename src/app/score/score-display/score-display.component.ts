@@ -14,10 +14,6 @@ export class ScoreDisplayComponent implements OnInit {
 
   ngOnInit() {
     this.score = 0;
-
-    setInterval(() => {
-      this.score += 35;
-    }, 300);
   }
 
 }

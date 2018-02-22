@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import * as fromStore from '../../store';
+import { StartPlaying, StopPlaying } from '../../store/actions';
 
 @Component({
   selector: 'app-control-container',
@@ -70,12 +71,12 @@ export class ControlContainerComponent implements OnInit {
   }
 
   public onStopGame() {
-    this.store.dispatch({type: 'STOP_PLAYING'});
+    this.store.dispatch(new StopPlaying());
     clearInterval(this.interval);
   }
 
   private startGame() {
-    this.store.dispatch({type: 'START_PLAYING'});
+    this.store.dispatch(new StartPlaying());
     this.startGameSound.nativeElement.play();
     setTimeout(() => this.generateRandomControl(), this.TIME_TO_START_GAME);
   }
