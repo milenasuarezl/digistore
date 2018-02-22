@@ -37,7 +37,8 @@ export class ControlContainerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isPlaying$ = this.store.pipe(map(state => state.ui.isPlaying));
+    this.isPlaying$ = this.store
+      .pipe(map(state => state.ui.isPlaying));
   }
 
   public onStartGame(): void {

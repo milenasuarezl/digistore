@@ -14,16 +14,14 @@ export const initialState: UiState = {
  * @param {UiActions} action
  * @returns {any}
  */
-export function reducer(state = initialState, action: UiActions) {
+export function reducer(state = initialState, action: UiActions): UiState {
   switch (action.type) {
     case START_PLAYING:
       return {
-        ...state,
         isPlaying: true
       };
     case STOP_PLAYING:
       return {
-        ...state,
         isPlaying: false
       };
     default:
