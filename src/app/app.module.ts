@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BoardModule } from './board/board.module';
 import { ScoreModule } from './score/score.module';
 import { StoreModule } from '@ngrx/store';
+import { appReducer } from './app.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import * as fromStore from './store/reducers';
