@@ -2,15 +2,15 @@
   <mat-card fxFlexFill fxLayout="column" class="mat-elevation-z8">
     <div class="control-grid" fxLayoutWrap="wrap">
       <div fxFlex="33%" fxLayoutAlign="center center"></div>
-      <div fxFlex="33%" fxLayoutAlign="center center" #upArrow><app-control-button></app-control-button></div>
+      <div fxFlex="33%" fxLayoutAlign="center center" #upArrow><app-control-button icon="arrow_upward"></app-control-button></div>
       <div fxFlex="33%" fxLayoutAlign="center center"></div>
 
-      <div fxFlex="33%" fxLayoutAlign="center center" #leftArrow><app-control-button></app-control-button></div>
+      <div fxFlex="33%" fxLayoutAlign="center center" #leftArrow><app-control-button icon="arrow_back"></app-control-button></div>
       <div fxFlex="33%" fxLayoutAlign="center center"><img src="./assets/images/logodf.jpg" width="65%"></div>
-      <div fxFlex="33%" fxLayoutAlign="center center" #rightArrow><app-control-button></app-control-button></div>
+      <div fxFlex="33%" fxLayoutAlign="center center" #rightArrow><app-control-button icon="arrow_forward"></app-control-button></div>
 
       <div fxFlex="33%" fxLayoutAlign="center center"></div>
-      <div fxFlex="33%" fxLayoutAlign="center center" #downArrow><app-control-button></app-control-button></div>
+      <div fxFlex="33%" fxLayoutAlign="center center" #downArrow><app-control-button icon="arrow_downward"></app-control-button></div>
       <div fxFlex="33%" fxLayoutAlign="center center"></div>
     </div>
     <button mat-button mat-raised-button color="accent" (click)="onStartGame()" *ngIf="!(isPlaying$ | async)">START</button>

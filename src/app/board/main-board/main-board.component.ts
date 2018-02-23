@@ -13,7 +13,6 @@ export class MainBoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.subscribe((data) => {
-      debugger;
       console.log('Data in the store: ');
       console.log(data);
     });

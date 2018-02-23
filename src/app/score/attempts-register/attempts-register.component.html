@@ -1,5 +1,5 @@
-<div fxLayout="column" fxLayoutAlign="center center" class="attempts-container mat-elevation-z4">
-  <div *ngFor="let attempt of attempts" fxLayout="row" fxLayoutAlign="space-around center" fxFlexFill class="attempt">
+<div fxLayout="column" class="attempts-container mat-elevation-z4">
+  <div *ngFor="let attempt of attempts" fxLayout="row" fxLayoutAlign="space-around center" class="attempt">
     <span><mat-icon>{{attempt.icon}}</mat-icon></span>
     <span><mat-icon>{{attempt.result}}</mat-icon></span>
   </div>

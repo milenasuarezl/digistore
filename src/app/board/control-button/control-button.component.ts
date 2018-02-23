@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-control-button',
@@ -7,7 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ControlButtonComponent implements OnInit {
 
-  constructor() { }
+  @Input() icon: string;
+
+  constructor() {
+  }
 
   ngOnInit() {
   }
