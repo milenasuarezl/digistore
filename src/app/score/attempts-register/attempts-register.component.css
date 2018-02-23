@@ -1,9 +1,25 @@
 .attempts-container {
+  background: #efefef;
+  color: #333;
+  font-family: 'Press Start 2P';
+  height: 80px;
+  overflow: auto;
   padding: 10px;
-  border: 5px dashed red;
-  height: 100%;
+  width: 478px;
 }
 
 .attempt {
-  width: 300px;
+  width: 100%;
+}
+
+.attempt span {
+  padding: 5px 20px;
+}
+
+.icon-attempt {
+
+}
+
+.icon-result img {
+  width: 60px;
 }

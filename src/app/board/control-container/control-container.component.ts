@@ -15,7 +15,7 @@ export class ControlContainerComponent implements OnInit {
   // Sounds
   @ViewChild('startGameSound') startGameSound;
   @ViewChild('gameOverSound') gameOverSound;
-  @ViewChild('laserSound') laserSound;
+  @ViewChild('arrowSound') arrowSound;
   @ViewChild('goodSound') goodSound;
 
   // Controls
@@ -51,7 +51,6 @@ export class ControlContainerComponent implements OnInit {
 
     switch (event.keyCode) {
       case KEY_CODE.RIGHT_ARROW:
-        this.sayGood();
         this.pressButtonEffect(this.rightArrow, 'pressed', this.TIME_DELAY_PRESS);
         break;
 
@@ -60,7 +59,7 @@ export class ControlContainerComponent implements OnInit {
         break;
 
       case KEY_CODE.UP_ARROW:
-        this.shotLaser();
+        this.sayGood();
         this.pressButtonEffect(this.upArrow, 'pressed', this.TIME_DELAY_PRESS);
         break;
 
@@ -86,7 +85,7 @@ export class ControlContainerComponent implements OnInit {
     const controls = [this.upArrow, this.leftArrow, this.rightArrow, this.downArrow];
 
     this.interval = setInterval(() => {
-      this.sayGood();
+      this.playArrow();
       const indexRandom = Math.round(Math.random() * (controls.length - 1));
       const control = controls[indexRandom];
       this.pressButtonEffect(control, 'active', this.TIME_DELAY_COLOR);
@@ -105,14 +104,17 @@ export class ControlContainerComponent implements OnInit {
   }
 
   private sayGameOver() {
+    this.gameOverSound.nativeElement.currentTime = 0;
     this.gameOverSound.nativeElement.play();
   }
 
-  private shotLaser() {
-    this.laserSound.nativeElement.play();
+  private playArrow() {
+    this.arrowSound.nativeElement.currentTime = 0;
+    this.arrowSound.nativeElement.play();
   }
 
   private sayGood() {
+    this.goodSound.nativeElement.currentTime = 0;
     this.goodSound.nativeElement.play();
   }
 }
