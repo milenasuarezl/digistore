@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import * as fromStore from '../../store';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-score-display',
@@ -7,13 +11,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScoreDisplayComponent implements OnInit {
 
-  score: number;
+  score$: Observable<number>;
 
-  constructor() {
+  constructor(private store: Store<fromStore.ApplicationState>) {
   }
 
   ngOnInit() {
-    this.score = 0;
+    this.score$ = this.store
+      .pipe(map(state => state.score.scoreValue));
   }
 
 }

@@ -3,7 +3,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import * as fromStore from '../../store';
-import { StartPlaying, StopPlaying } from '../../store/actions';
+import { ResetScore, StartPlaying, StopPlaying } from '../../store/actions';
+import { AddScore } from '../../store/actions/score.actions';
 
 @Component({
   selector: 'app-control-container',
@@ -23,6 +24,8 @@ export class ControlContainerComponent implements OnInit {
   @ViewChild('leftArrow') leftArrow;
   @ViewChild('rightArrow') rightArrow;
   @ViewChild('downArrow') downArrow;
+  currentArrow;
+
   // Variables in View
   isPlaying$: Observable<boolean>;
   interval;
@@ -51,32 +54,32 @@ export class ControlContainerComponent implements OnInit {
 
     switch (event.keyCode) {
       case KEY_CODE.RIGHT_ARROW:
-        this.pressButtonEffect(this.rightArrow, 'pressed', this.TIME_DELAY_PRESS);
+        this.pressButtonEffect(this.rightArrow, 'pressed', this.TIME_DELAY_PRESS, true);
         break;
 
       case KEY_CODE.LEFT_ARROW:
-        this.pressButtonEffect(this.leftArrow, 'pressed', this.TIME_DELAY_PRESS);
+        this.pressButtonEffect(this.leftArrow, 'pressed', this.TIME_DELAY_PRESS, true);
         break;
 
       case KEY_CODE.UP_ARROW:
-        this.sayGood();
-        this.pressButtonEffect(this.upArrow, 'pressed', this.TIME_DELAY_PRESS);
+        this.pressButtonEffect(this.upArrow, 'pressed', this.TIME_DELAY_PRESS, true);
         break;
 
       case KEY_CODE.DOWN_ARROW:
-        this.sayGameOver();
-        this.pressButtonEffect(this.downArrow, 'pressed', this.TIME_DELAY_PRESS);
+        this.pressButtonEffect(this.downArrow, 'pressed', this.TIME_DELAY_PRESS, true);
         break;
     }
   }
 
   public onStopGame() {
     this.store.dispatch(new StopPlaying());
+    this.sayGameOver();
     clearInterval(this.interval);
   }
 
   private startGame() {
     this.store.dispatch(new StartPlaying());
+    this.store.dispatch(new ResetScore());
     this.startGameSound.nativeElement.play();
     setTimeout(() => this.generateRandomControl(), this.TIME_TO_START_GAME);
   }
@@ -87,20 +90,31 @@ export class ControlContainerComponent implements OnInit {
     this.interval = setInterval(() => {
       this.playArrow();
       const indexRandom = Math.round(Math.random() * (controls.length - 1));
-      const control = controls[indexRandom];
-      this.pressButtonEffect(control, 'active', this.TIME_DELAY_COLOR);
+      this.currentArrow = controls[indexRandom];
+      this.pressButtonEffect(this.currentArrow, 'active', this.TIME_DELAY_COLOR);
     }, this.TIME_UPDATE_COLOR);
   }
 
 
-  private pressButtonEffect(button: ElementRef, colorClassName: string, timeDelay: number) {
+  private pressButtonEffect(button: ElementRef, colorClassName: string, timeDelay: number, isPressedByUser = false) {
     const dom = button.nativeElement.querySelector('button');
     dom.click();
     dom.classList.add(colorClassName);
 
+    if (isPressedByUser) {
+      this.verifyMatch(button);
+    }
+
     setTimeout(() => {
       dom.classList.remove(colorClassName);
     }, timeDelay);
+  }
+
+  private verifyMatch(arrowPressed: ElementRef) {
+    if (this.currentArrow === arrowPressed) {
+      this.sayGood();
+      this.store.dispatch(new AddScore(20));
+    }
   }
 
   private sayGameOver() {
