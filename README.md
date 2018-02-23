@@ -12,7 +12,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 The goal of the challenge is complete the remaining parts after the explanation by the speakers, ask questions, 
 and enjoy the workshop 🍻 .
 
-![Engineer Working](https://github.com/codesandtags/digistore/tree/master/src/assets/images/monkey.gif "Engineer working")
+![Engineer Working](https://github.com/codesandtags/digistore/blob/master/src/assets/images/monkey.gif)
 
 
 
