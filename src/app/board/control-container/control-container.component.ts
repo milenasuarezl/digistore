@@ -50,7 +50,6 @@ export class ControlContainerComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    console.log(event);
 
     switch (event.keyCode) {
       case KEY_CODE.RIGHT_ARROW:
