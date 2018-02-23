@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import * as fromStore from '../../store';
 import { ResetScore, StartPlaying, StopPlaying } from '../../store/actions';
 import { AddScore } from '../../store/actions/score.actions';
+import { AddAttempt } from '../../store/actions/attempts.actions';
 
 @Component({
   selector: 'app-control-container',
@@ -119,6 +120,9 @@ export class ControlContainerComponent implements OnInit {
     if (this.currentArrow === arrowPressed) {
       this.sayGood();
       this.store.dispatch(new AddScore(20));
+      this.store.dispatch(new AddAttempt(true));
+    } else {
+      this.store.dispatch(new AddAttempt(false));
     }
   }
 

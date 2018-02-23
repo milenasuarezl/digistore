@@ -5,3 +5,7 @@
     <span class="icon-result"><img src="assets/images/match.png"></span>
   </div>
 </div>
+<div fxLayout="row" fxLayoutAlign="center center" class="attempt">
+    <span>{{attempSuccessfull$ | async | number: '1.0-0'}}</span><span>Attemps Succesfull</span>
+    <span>{{attempFailure$ | async | number: '1.0-0'}}</span><span>Attemps Failures</span>
+  </div>
