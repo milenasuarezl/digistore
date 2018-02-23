@@ -34,7 +34,7 @@ export class ControlContainerComponent implements OnInit {
   private readonly TIME_DELAY_PRESS = 200;
   private readonly TIME_DELAY_COLOR = 400;
   private readonly TIME_UPDATE_COLOR = 1000;
-  private readonly TIME_TO_START_GAME = 3000;
+  private readonly TIME_TO_START_GAME = 1000;
 
   constructor(private store: Store<fromStore.ApplicationState>) {
   }
@@ -42,6 +42,12 @@ export class ControlContainerComponent implements OnInit {
   ngOnInit() {
     this.isPlaying$ = this.store
       .pipe(map(state => state.ui.isPlaying));
+
+    this.store.subscribe(state => {
+      if (state.ui.timeOutGame) {
+        this.onStopGame();
+      }
+    });
   }
 
   public onStartGame(): void {

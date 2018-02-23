@@ -1,13 +1,14 @@
 import { START_PLAYING, STOP_PLAYING, UiActions } from '../actions/ui.actions';
+import { TIME_OUT_GAME } from '../actions';
 
 export interface UiState {
   isPlaying: boolean;
-  timeInSeconds: number;
+  timeOutGame: boolean;
 }
 
 export const initialState: UiState = {
   isPlaying: false,
-  timeInSeconds: 0,
+  timeOutGame: false,
 };
 
 /**
@@ -21,12 +22,17 @@ export function reducer(state = initialState, action: UiActions): UiState {
     case START_PLAYING:
       return {
         isPlaying: true,
-        timeInSeconds: 30
+        timeOutGame: false
       };
     case STOP_PLAYING:
       return {
         isPlaying: false,
-        timeInSeconds: 0
+        timeOutGame: false
+      };
+    case TIME_OUT_GAME:
+      return {
+        ...state,
+        timeOutGame: true
       };
     default:
       return state;
