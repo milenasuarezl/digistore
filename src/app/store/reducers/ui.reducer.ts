@@ -2,10 +2,12 @@ import { START_PLAYING, STOP_PLAYING, UiActions } from '../actions/ui.actions';
 
 export interface UiState {
   isPlaying: boolean;
+  timeInSeconds: number;
 }
 
 export const initialState: UiState = {
-  isPlaying: false
+  isPlaying: false,
+  timeInSeconds: 0,
 };
 
 /**
@@ -18,11 +20,13 @@ export function reducer(state = initialState, action: UiActions): UiState {
   switch (action.type) {
     case START_PLAYING:
       return {
-        isPlaying: true
+        isPlaying: true,
+        timeInSeconds: 30
       };
     case STOP_PLAYING:
       return {
-        isPlaying: false
+        isPlaying: false,
+        timeInSeconds: 0
       };
     default:
       return state;

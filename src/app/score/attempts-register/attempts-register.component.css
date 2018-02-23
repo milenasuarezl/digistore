@@ -5,11 +5,12 @@
   height: 80px;
   overflow: auto;
   padding: 10px;
-  width: 478px;
+  max-width: 300px;
 }
 
-.attempt {
-  width: 100%;
+h3 {
+  text-align: center;
+  font-family: 'Press Start 2P';
 }
 
 .attempt span {

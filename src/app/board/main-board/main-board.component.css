@@ -13,3 +13,7 @@
   left: 0;
   z-index: -1;
 }
+
+.information-container {
+  margin-top: 20px;
+}
