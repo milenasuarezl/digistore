@@ -1,15 +1,19 @@
-import * as fromAttempts from '../actions/attempts.actions';
+import * as fromAttempts from "../actions/attempts.actions";
 
 // Interface
+
+export interface Attempt {
+  control: string,
+  result: string,
+  icon?: string
+}
 export interface AttemptsState {
-  successfull?: number;
-  failures?: number;
+  attemps: Attempt[];
 }
 
 // Initial State Definition
 export const initialState: AttemptsState = {
-  successfull: 0,
-  failures: 0
+  attemps:[]
 };
 
 /**
@@ -18,22 +22,17 @@ export const initialState: AttemptsState = {
  * @param {AttemptsActions} action
  * @returns {AttemptsState}
  */
-export function reducer(state = initialState, action: fromAttempts.AttemptsActions): AttemptsState {
-  switch (action.type) {
+export function reducer (state = initialState, action: fromAttempts.AttemptsActions): AttemptsState {
+   switch (action.type) {
     case fromAttempts.ADD_ATTEMPT:
-      if (action.payload) {
-        return {
-          successfull: state.successfull++,
-        };
-      } else {
-        return {
-          failures: state.failures++,
-        };
-      }
+      /* return {
+        attemps: state.attemps.push({});
+      } */
+      return state;
+      break;
     case fromAttempts.RESET_ATTEMPTS:
       return {
-        successfull: 0,
-        failures: 0
+        attemps:[]
       };
     default:
       return state;

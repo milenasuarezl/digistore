@@ -8,7 +8,7 @@ export const RESET_ATTEMPTS = '[Attempt] Reset attempts in game';
 export class AddAttempt implements Action {
   readonly type = ADD_ATTEMPT;
 
-  constructor(public payload: boolean) {
+  constructor(public payload: any) {
   }
 }
 

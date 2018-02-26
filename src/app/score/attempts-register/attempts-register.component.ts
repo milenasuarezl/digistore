@@ -1,3 +1,4 @@
+import { Attempt } from './../../store/reducers/attempts.reducer';
 import { Component, OnInit } from '@angular/core';
 import * as fromStore from '../../store';
 import { Store } from '@ngrx/store';
@@ -11,8 +12,8 @@ import { Observable } from 'rxjs/Observable';
 })
 export class AttemptsRegisterComponent implements OnInit {
 
-  attempSuccessfull$: Observable<number>;
-  attempFailure$: Observable<number>;
+  attemps$: Observable<any>;
+  attempt: Attempt[];
 
   attempts = [{
     control: 'UP',
@@ -30,19 +31,13 @@ export class AttemptsRegisterComponent implements OnInit {
     control: 'LEFT',
     result: 'OK',
     icon: 'arrow_back'
-  }, {
-    control: 'UP',
-    result: 'OK',
-    icon: 'arrow_upward'
   }];
 
   constructor(private store: Store<fromStore.ApplicationState>) {
   }
 
   ngOnInit() {
-    this.attempSuccessfull$ = this.store
-    .pipe(map(state => state.attempts.successfull));
-    this.attempFailure$ = this.store
-    .pipe(map(state => state.attempts.failures));
+    this.attemps$ = this.store
+      .pipe(map(state => this.attempt = state.attempts.attemps));
   }
 }

@@ -1,30 +1,35 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
-import * as fromStore from '../../store';
-import { ResetScore, StartPlaying, StopPlaying } from '../../store/actions';
-import { AddScore } from '../../store/actions/score.actions';
-import { AddAttempt } from '../../store/actions/attempts.actions';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild
+} from "@angular/core";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs/Observable";
+import { map } from "rxjs/operators";
+import * as fromStore from "../../store";
+import { ResetScore, StartPlaying, StopPlaying } from "../../store/actions";
+import { AddScore } from "../../store/actions/score.actions";
+import { AddAttempt } from "../../store/actions/attempts.actions";
 
 @Component({
-  selector: 'app-control-container',
-  templateUrl: './control-container.component.html',
-  styleUrls: ['./control-container.component.css']
+  selector: "app-control-container",
+  templateUrl: "./control-container.component.html",
+  styleUrls: ["./control-container.component.css"]
 })
 export class ControlContainerComponent implements OnInit {
-
   // Sounds
-  @ViewChild('startGameSound') startGameSound;
-  @ViewChild('gameOverSound') gameOverSound;
-  @ViewChild('arrowSound') arrowSound;
-  @ViewChild('goodSound') goodSound;
+  @ViewChild("startGameSound") startGameSound;
+  @ViewChild("gameOverSound") gameOverSound;
+  @ViewChild("arrowSound") arrowSound;
+  @ViewChild("goodSound") goodSound;
 
   // Controls
-  @ViewChild('upArrow') upArrow;
-  @ViewChild('leftArrow') leftArrow;
-  @ViewChild('rightArrow') rightArrow;
-  @ViewChild('downArrow') downArrow;
+  @ViewChild("upArrow") upArrow;
+  @ViewChild("leftArrow") leftArrow;
+  @ViewChild("rightArrow") rightArrow;
+  @ViewChild("downArrow") downArrow;
   currentArrow;
 
   // Variables in View
@@ -37,12 +42,10 @@ export class ControlContainerComponent implements OnInit {
   private readonly TIME_UPDATE_COLOR = 1000;
   private readonly TIME_TO_START_GAME = 1000;
 
-  constructor(private store: Store<fromStore.ApplicationState>) {
-  }
+  constructor(private store: Store<fromStore.ApplicationState>) {}
 
   ngOnInit() {
-    this.isPlaying$ = this.store
-      .pipe(map(state => state.ui.isPlaying));
+    this.isPlaying$ = this.store.pipe(map(state => state.ui.isPlaying));
 
     this.store.subscribe(state => {
       if (state.ui.timeOutGame) {
@@ -55,24 +58,43 @@ export class ControlContainerComponent implements OnInit {
     this.startGame();
   }
 
-  @HostListener('window:keyup', ['$event'])
+  @HostListener("window:keyup", ["$event"])
   keyEvent(event: KeyboardEvent) {
-
     switch (event.keyCode) {
       case KEY_CODE.RIGHT_ARROW:
-        this.pressButtonEffect(this.rightArrow, 'pressed', this.TIME_DELAY_PRESS, true);
+        this.pressButtonEffect(
+          this.rightArrow,
+          "pressed",
+          this.TIME_DELAY_PRESS,
+          true
+        );
         break;
 
       case KEY_CODE.LEFT_ARROW:
-        this.pressButtonEffect(this.leftArrow, 'pressed', this.TIME_DELAY_PRESS, true);
+        this.pressButtonEffect(
+          this.leftArrow,
+          "pressed",
+          this.TIME_DELAY_PRESS,
+          true
+        );
         break;
 
       case KEY_CODE.UP_ARROW:
-        this.pressButtonEffect(this.upArrow, 'pressed', this.TIME_DELAY_PRESS, true);
+        this.pressButtonEffect(
+          this.upArrow,
+          "pressed",
+          this.TIME_DELAY_PRESS,
+          true
+        );
         break;
 
       case KEY_CODE.DOWN_ARROW:
-        this.pressButtonEffect(this.downArrow, 'pressed', this.TIME_DELAY_PRESS, true);
+        this.pressButtonEffect(
+          this.downArrow,
+          "pressed",
+          this.TIME_DELAY_PRESS,
+          true
+        );
         break;
     }
   }
@@ -91,19 +113,32 @@ export class ControlContainerComponent implements OnInit {
   }
 
   private generateRandomControl() {
-    const controls = [this.upArrow, this.leftArrow, this.rightArrow, this.downArrow];
+    const controls = [
+      this.upArrow,
+      this.leftArrow,
+      this.rightArrow,
+      this.downArrow
+    ];
 
     this.interval = setInterval(() => {
       this.playArrow();
       const indexRandom = Math.round(Math.random() * (controls.length - 1));
       this.currentArrow = controls[indexRandom];
-      this.pressButtonEffect(this.currentArrow, 'active', this.TIME_DELAY_COLOR);
+      this.pressButtonEffect(
+        this.currentArrow,
+        "active",
+        this.TIME_DELAY_COLOR
+      );
     }, this.TIME_UPDATE_COLOR);
   }
 
-
-  private pressButtonEffect(button: ElementRef, colorClassName: string, timeDelay: number, isPressedByUser = false) {
-    const dom = button.nativeElement.querySelector('button');
+  private pressButtonEffect(
+    button: ElementRef,
+    colorClassName: string,
+    timeDelay: number,
+    isPressedByUser = false
+  ) {
+    const dom = button.nativeElement.querySelector("button");
     dom.click();
     dom.classList.add(colorClassName);
 
@@ -117,12 +152,25 @@ export class ControlContainerComponent implements OnInit {
   }
 
   private verifyMatch(arrowPressed: ElementRef) {
-    if (this.currentArrow === arrowPressed) {
-      this.sayGood();
+    console.log('here', this.currentArrow);
+    
+
+    this.sayGood();
+      if (this.currentArrow === arrowPressed) {
       this.store.dispatch(new AddScore(20));
-      this.store.dispatch(new AddAttempt(true));
+      this.store.dispatch(
+        new AddAttempt({
+          control: this.currentArrow,
+          result: "OK"
+        })
+      );
     } else {
-      this.store.dispatch(new AddAttempt(false));
+      this.store.dispatch(
+        new AddAttempt({
+          control: this.currentArrow,
+          result: "WRONG"
+        })
+      );
     }
   }
 
@@ -135,7 +183,7 @@ export class ControlContainerComponent implements OnInit {
     this.arrowSound.nativeElement.currentTime = 0;
     this.arrowSound.nativeElement.play();
   }
-
+ñ
   private sayGood() {
     this.goodSound.nativeElement.currentTime = 0;
     this.goodSound.nativeElement.play();
