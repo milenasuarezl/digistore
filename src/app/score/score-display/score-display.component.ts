@@ -20,5 +20,4 @@ export class ScoreDisplayComponent implements OnInit {
     this.score$ = this.store
       .pipe(map(state => state.score.scoreValue));
   }
-
 }

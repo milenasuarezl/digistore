@@ -1,7 +1,7 @@
 <h3>Attempts</h3>
 <div class="attempts-container mat-elevation-z4" fxLayout="row">
-  <div *ngFor="let attempt of attempts" fxLayout="row" fxLayoutAlign="center center" class="attempt">
-    <span class="icon-attempt"><mat-icon>{{attempt.icon}}</mat-icon></span>
+  <div *ngFor="let attemp of attempts$ | async" fxLayout="row" fxLayoutAlign="center center" class="attempt">
+    <span class="icon-attempt"><mat-icon>{{attemp.icon}}</mat-icon></span>
     <span class="icon-result"><img src="assets/images/match.png"></span>
   </div>
 </div>

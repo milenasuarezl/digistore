@@ -12,32 +12,14 @@ import { Observable } from 'rxjs/Observable';
 })
 export class AttemptsRegisterComponent implements OnInit {
 
-  attemps$: Observable<any>;
-  attempt: Attempt[];
-
-  attempts = [{
-    control: 'UP',
-    result: 'OK',
-    icon: 'arrow_upward'
-  }, {
-    control: 'RIGHT',
-    result: 'OK',
-    icon: 'arrow_forward'
-  }, {
-    control: 'DOWN',
-    result: 'WRONG',
-    icon: 'arrow_downward'
-  }, {
-    control: 'LEFT',
-    result: 'OK',
-    icon: 'arrow_back'
-  }];
+  attempts$: Observable<any>;
+  totalAttemps: number;
 
   constructor(private store: Store<fromStore.ApplicationState>) {
   }
 
   ngOnInit() {
-    this.attemps$ = this.store
-      .pipe(map(state => this.attempt = state.attempts.attemps));
+    this.attempts$ = this.store
+      .pipe(map((state, total) => state.attempts.attempts));
   }
 }

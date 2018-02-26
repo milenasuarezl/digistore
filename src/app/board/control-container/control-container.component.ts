@@ -12,6 +12,7 @@ import * as fromStore from "../../store";
 import { ResetScore, StartPlaying, StopPlaying } from "../../store/actions";
 import { AddScore } from "../../store/actions/score.actions";
 import { AddAttempt } from "../../store/actions/attempts.actions";
+import { Attempt } from "./../../store/reducers/attempts.reducer";
 
 @Component({
   selector: "app-control-container",
@@ -42,7 +43,7 @@ export class ControlContainerComponent implements OnInit {
   private readonly TIME_UPDATE_COLOR = 1000;
   private readonly TIME_TO_START_GAME = 1000;
 
-  constructor(private store: Store<fromStore.ApplicationState>) {}
+  constructor(private store: Store<fromStore.ApplicationState>) { }
 
   ngOnInit() {
     this.isPlaying$ = this.store.pipe(map(state => state.ui.isPlaying));
@@ -152,26 +153,45 @@ export class ControlContainerComponent implements OnInit {
   }
 
   private verifyMatch(arrowPressed: ElementRef) {
-    console.log('here', this.currentArrow);
-    
-
     this.sayGood();
-      if (this.currentArrow === arrowPressed) {
+    if (this.currentArrow === arrowPressed) {
       this.store.dispatch(new AddScore(20));
-      this.store.dispatch(
-        new AddAttempt({
-          control: this.currentArrow,
-          result: "OK"
-        })
-      );
+      this.getArrowPressed(arrowPressed, true);
     } else {
-      this.store.dispatch(
-        new AddAttempt({
-          control: this.currentArrow,
-          result: "WRONG"
-        })
-      );
+      this.getArrowPressed(arrowPressed, false);
     }
+  }
+
+  private getArrowPressed(arrowPressed: ElementRef, isSucess: boolean = false) {
+    const attempt: Attempt = {
+      control: '',
+      result: ''
+    };
+    const result = isSucess ? 'OK' : 'WRONG';
+    if (this.upArrow === arrowPressed) {
+      attempt.control = 'UP';
+      attempt.result = result;
+      attempt.icon = 'arrow_upward';
+    } else if (this.rightArrow === arrowPressed) {
+      attempt.control = 'RIGHT';
+      attempt.result = result;
+      attempt.icon = 'arrow_forward';
+    } else if (this.downArrow === arrowPressed) {
+      attempt.control = 'DOWN';
+      attempt.result = result;
+      attempt.icon = 'arrow_downward';
+    } else {
+      attempt.control = 'LEFT';
+      attempt.result = result;
+      attempt.icon = 'arrow_back';
+    }
+    this.addAttempt(attempt);
+  }
+
+  private addAttempt(attemp: Attempt) {
+    this.store.dispatch(
+      new AddAttempt(attemp)
+    );
   }
 
   private sayGameOver() {
@@ -183,7 +203,7 @@ export class ControlContainerComponent implements OnInit {
     this.arrowSound.nativeElement.currentTime = 0;
     this.arrowSound.nativeElement.play();
   }
-ñ
+  
   private sayGood() {
     this.goodSound.nativeElement.currentTime = 0;
     this.goodSound.nativeElement.play();
