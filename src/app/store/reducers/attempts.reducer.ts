@@ -4,7 +4,7 @@ import * as fromAttempts from '../actions/attempts.actions';
 
 export interface Attempt {
   control: string;
-  result: string;
+  isSuccess: boolean;
   icon?: string;
 }
 export interface AttemptsState {
@@ -27,7 +27,7 @@ export function reducer(state = initialState, action: fromAttempts.AttemptsActio
     case fromAttempts.ADD_ATTEMPT:
       state.attempts.push({
         control: action.payload.control,
-        result: action.payload.result,
+        isSuccess: action.payload.isSuccess,
         icon: action.payload.icon
       });
       return {

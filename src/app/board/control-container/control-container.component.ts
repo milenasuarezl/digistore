@@ -1,49 +1,45 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  OnInit,
-  ViewChild
-} from "@angular/core";
-import { Store } from "@ngrx/store";
-import { Observable } from "rxjs/Observable";
-import { map } from "rxjs/operators";
-import * as fromStore from "../../store";
-import { ResetScore, StartPlaying, StopPlaying } from "../../store/actions";
-import { AddScore } from "../../store/actions/score.actions";
-import { AddAttempt } from "../../store/actions/attempts.actions";
-import { Attempt } from "./../../store/reducers/attempts.reducer";
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
+import * as fromStore from '../../store';
+import { ResetAttempts, ResetScore, StartPlaying, StopPlaying } from '../../store/actions';
+import { AddScore } from '../../store/actions/score.actions';
+import { AddAttempt } from '../../store/actions/attempts.actions';
+import { Attempt } from './../../store/reducers/attempts.reducer';
 
 @Component({
-  selector: "app-control-container",
-  templateUrl: "./control-container.component.html",
-  styleUrls: ["./control-container.component.css"]
+  selector: 'app-control-container',
+  templateUrl: './control-container.component.html',
+  styleUrls: ['./control-container.component.css']
 })
 export class ControlContainerComponent implements OnInit {
   // Sounds
-  @ViewChild("startGameSound") startGameSound;
-  @ViewChild("gameOverSound") gameOverSound;
-  @ViewChild("arrowSound") arrowSound;
-  @ViewChild("goodSound") goodSound;
+  @ViewChild('startGameSound') startGameSound;
+  @ViewChild('gameOverSound') gameOverSound;
+  @ViewChild('arrowSound') arrowSound;
+  @ViewChild('goodSound') goodSound;
 
   // Controls
-  @ViewChild("upArrow") upArrow;
-  @ViewChild("leftArrow") leftArrow;
-  @ViewChild("rightArrow") rightArrow;
-  @ViewChild("downArrow") downArrow;
+  @ViewChild('upArrow') upArrow;
+  @ViewChild('leftArrow') leftArrow;
+  @ViewChild('rightArrow') rightArrow;
+  @ViewChild('downArrow') downArrow;
   currentArrow;
 
   // Variables in View
   isPlaying$: Observable<boolean>;
+  isControlBlock: boolean;
   interval;
 
   // Constants
-  private readonly TIME_DELAY_PRESS = 200;
+  private readonly TIME_DELAY_PRESS = 400;
   private readonly TIME_DELAY_COLOR = 400;
   private readonly TIME_UPDATE_COLOR = 1000;
-  private readonly TIME_TO_START_GAME = 1000;
+  private readonly TIME_TO_START_GAME = 500;
 
-  constructor(private store: Store<fromStore.ApplicationState>) { }
+  constructor(private store: Store<fromStore.ApplicationState>) {
+  }
 
   ngOnInit() {
     this.isPlaying$ = this.store.pipe(map(state => state.ui.isPlaying));
@@ -59,13 +55,13 @@ export class ControlContainerComponent implements OnInit {
     this.startGame();
   }
 
-  @HostListener("window:keyup", ["$event"])
+  @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     switch (event.keyCode) {
       case KEY_CODE.RIGHT_ARROW:
         this.pressButtonEffect(
           this.rightArrow,
-          "pressed",
+          'pressed',
           this.TIME_DELAY_PRESS,
           true
         );
@@ -74,7 +70,7 @@ export class ControlContainerComponent implements OnInit {
       case KEY_CODE.LEFT_ARROW:
         this.pressButtonEffect(
           this.leftArrow,
-          "pressed",
+          'pressed',
           this.TIME_DELAY_PRESS,
           true
         );
@@ -83,7 +79,7 @@ export class ControlContainerComponent implements OnInit {
       case KEY_CODE.UP_ARROW:
         this.pressButtonEffect(
           this.upArrow,
-          "pressed",
+          'pressed',
           this.TIME_DELAY_PRESS,
           true
         );
@@ -92,7 +88,7 @@ export class ControlContainerComponent implements OnInit {
       case KEY_CODE.DOWN_ARROW:
         this.pressButtonEffect(
           this.downArrow,
-          "pressed",
+          'pressed',
           this.TIME_DELAY_PRESS,
           true
         );
@@ -109,6 +105,7 @@ export class ControlContainerComponent implements OnInit {
   private startGame() {
     this.store.dispatch(new StartPlaying());
     this.store.dispatch(new ResetScore());
+    this.store.dispatch(new ResetAttempts());
     this.startGameSound.nativeElement.play();
     setTimeout(() => this.generateRandomControl(), this.TIME_TO_START_GAME);
   }
@@ -125,25 +122,24 @@ export class ControlContainerComponent implements OnInit {
       this.playArrow();
       const indexRandom = Math.round(Math.random() * (controls.length - 1));
       this.currentArrow = controls[indexRandom];
+      this.isControlBlock = false;
       this.pressButtonEffect(
         this.currentArrow,
-        "active",
+        'active',
         this.TIME_DELAY_COLOR
       );
     }, this.TIME_UPDATE_COLOR);
   }
 
-  private pressButtonEffect(
-    button: ElementRef,
-    colorClassName: string,
-    timeDelay: number,
-    isPressedByUser = false
-  ) {
-    const dom = button.nativeElement.querySelector("button");
+  private pressButtonEffect(button: ElementRef,
+                            colorClassName: string,
+                            timeDelay: number,
+                            isPressedByUser = false) {
+    const dom = button.nativeElement.querySelector('button');
     dom.click();
     dom.classList.add(colorClassName);
 
-    if (isPressedByUser) {
+    if (isPressedByUser && !this.isControlBlock) {
       this.verifyMatch(button);
     }
 
@@ -153,45 +149,36 @@ export class ControlContainerComponent implements OnInit {
   }
 
   private verifyMatch(arrowPressed: ElementRef) {
-    this.sayGood();
+    this.isControlBlock = true;
+
     if (this.currentArrow === arrowPressed) {
+      this.sayGood();
       this.store.dispatch(new AddScore(20));
-      this.getArrowPressed(arrowPressed, true);
+      this.registerAttempt(arrowPressed, true);
     } else {
-      this.getArrowPressed(arrowPressed, false);
+      this.registerAttempt(arrowPressed, false);
     }
   }
 
-  private getArrowPressed(arrowPressed: ElementRef, isSucess: boolean = false) {
+  private registerAttempt(arrowPressed: ElementRef, isSuccess: boolean = false) {
     const attempt: Attempt = {
       control: '',
-      result: ''
+      isSuccess: isSuccess,
+      icon: arrowPressed.nativeElement.querySelector('mat-icon').textContent
     };
-    const result = isSucess ? 'OK' : 'WRONG';
+
+
     if (this.upArrow === arrowPressed) {
       attempt.control = 'UP';
-      attempt.result = result;
-      attempt.icon = 'arrow_upward';
     } else if (this.rightArrow === arrowPressed) {
       attempt.control = 'RIGHT';
-      attempt.result = result;
-      attempt.icon = 'arrow_forward';
     } else if (this.downArrow === arrowPressed) {
       attempt.control = 'DOWN';
-      attempt.result = result;
-      attempt.icon = 'arrow_downward';
     } else {
       attempt.control = 'LEFT';
-      attempt.result = result;
-      attempt.icon = 'arrow_back';
     }
-    this.addAttempt(attempt);
-  }
 
-  private addAttempt(attemp: Attempt) {
-    this.store.dispatch(
-      new AddAttempt(attemp)
-    );
+    this.store.dispatch(new AddAttempt(attempt));
   }
 
   private sayGameOver() {
@@ -203,7 +190,7 @@ export class ControlContainerComponent implements OnInit {
     this.arrowSound.nativeElement.currentTime = 0;
     this.arrowSound.nativeElement.play();
   }
-  
+
   private sayGood() {
     this.goodSound.nativeElement.currentTime = 0;
     this.goodSound.nativeElement.play();
