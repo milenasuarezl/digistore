@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import * as fromStore from '../../store';
-import { ResetScore, StartPlaying, StopPlaying } from '../../store/actions';
+import { ResetScore, StartPlaying, StopPlaying, ResetAttempts } from '../../store/actions';
 // import { AddScore } from '../../store/actions/score.actions';
 // import { AddAttempt } from '../../store/actions/attempts.actions';
 import { Attempt } from './../../store/reducers/attempts.reducer';
@@ -105,6 +105,7 @@ export class ControlContainerComponent implements OnInit {
   private startGame() {
     this.store.dispatch(new StartPlaying());
     this.store.dispatch(new ResetScore());
+    this.store.dispatch(new ResetAttempts());
     // TODO #10 dispatch the Action for reset the attempts here
     this.startGameSound.nativeElement.play();
     setTimeout(() => this.generateRandomControl(), this.TIME_TO_START_GAME);
