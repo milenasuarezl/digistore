@@ -1,20 +1,15 @@
+// Action Constants
+// TODO #4 Add actions here
 import { Action } from '@ngrx/store';
 
-// Action Constants
-export const ADD_SCORE = '[Score] Add Score';
-export const RESET_SCORE = '[Score] Reset score to 0';
+export const RESET_SCORE = '[Score] Setting the score to 0';
 
 // Action Creators
-export class AddScore implements Action {
-  readonly type = ADD_SCORE;
-
-  constructor(public payload: any) {
-  }
-}
-
+// TODO #5 Implement action creators here
 export class ResetScore implements Action {
   readonly type = RESET_SCORE;
 }
 
 // Action Types
-export type ScoreActions = AddScore | ResetScore;
+// TODO #6 Implement action types here. Do not forget export your things.
+export type ScoreActions = ResetScore;

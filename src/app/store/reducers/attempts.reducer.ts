@@ -1,12 +1,12 @@
 import * as fromAttempts from '../actions/attempts.actions';
 
 // Interface
-
 export interface Attempt {
   control: string;
   isSuccess: boolean;
   icon?: string;
 }
+
 export interface AttemptsState {
   attempts: Attempt[];
 }
@@ -23,21 +23,6 @@ export const initialState: AttemptsState = {
  * @returns {AttemptsState}
  */
 export function reducer(state = initialState, action: fromAttempts.AttemptsActions): AttemptsState {
-  switch (action.type) {
-    case fromAttempts.ADD_ATTEMPT:
-      state.attempts.push({
-        control: action.payload.control,
-        isSuccess: action.payload.isSuccess,
-        icon: action.payload.icon
-      });
-      return {
-        attempts: state.attempts
-      };
-    case fromAttempts.RESET_ATTEMPTS:
-      return {
-        attempts: []
-      };
-    default:
-      return state;
-  }
+  // TODO #7 : Implement the reducer for the actions created
+  return state;
 }

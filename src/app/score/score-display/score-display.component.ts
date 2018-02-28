@@ -17,7 +17,7 @@ export class ScoreDisplayComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.score$ = this.store
-      .pipe(map(state => state.score.scoreValue));
+    // TODO #13: If you want to show the current score, remove the next comment.
+    // this.score$ = this.store.pipe(map(state => state.score.scoreValue));
   }
 }

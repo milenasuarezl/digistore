@@ -6,8 +6,9 @@ export interface ScoreState {
 }
 
 // Initial state definition
+// TODO #9 : Fix the initial state
 export const initialState: ScoreState = {
-  scoreValue: 0
+  scoreValue: 9999999
 };
 
 /**
@@ -17,12 +18,9 @@ export const initialState: ScoreState = {
  * @returns {ScoreState}
  */
 export function reducer(state = initialState, action: fromScore.ScoreActions): ScoreState {
-  switch (action.type) {
-    case fromScore.ADD_SCORE:
-      return {
-        scoreValue: state.scoreValue + action.payload
-      };
+  // TODO #8 : Implement the Add Score
 
+  switch (action.type) {
     case fromScore.RESET_SCORE:
       return {
         scoreValue: 0

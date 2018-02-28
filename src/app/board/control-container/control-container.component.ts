@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 import * as fromStore from '../../store';
-import { ResetAttempts, ResetScore, StartPlaying, StopPlaying } from '../../store/actions';
-import { AddScore } from '../../store/actions/score.actions';
-import { AddAttempt } from '../../store/actions/attempts.actions';
+import { ResetScore, StartPlaying, StopPlaying } from '../../store/actions';
+// import { AddScore } from '../../store/actions/score.actions';
+// import { AddAttempt } from '../../store/actions/attempts.actions';
 import { Attempt } from './../../store/reducers/attempts.reducer';
 
 @Component({
@@ -105,7 +105,7 @@ export class ControlContainerComponent implements OnInit {
   private startGame() {
     this.store.dispatch(new StartPlaying());
     this.store.dispatch(new ResetScore());
-    this.store.dispatch(new ResetAttempts());
+    // TODO #10 dispatch the Action for reset the attempts here
     this.startGameSound.nativeElement.play();
     setTimeout(() => this.generateRandomControl(), this.TIME_TO_START_GAME);
   }
@@ -153,7 +153,7 @@ export class ControlContainerComponent implements OnInit {
 
     if (this.currentArrow === arrowPressed) {
       this.sayGood();
-      this.store.dispatch(new AddScore(20));
+      // TODO #12: Dispatch the AddScore action here adding as parameter 20 points :D
       this.registerAttempt(arrowPressed, true);
     } else {
       this.registerAttempt(arrowPressed, false);
@@ -178,7 +178,7 @@ export class ControlContainerComponent implements OnInit {
       attempt.control = 'LEFT';
     }
 
-    this.store.dispatch(new AddAttempt(attempt));
+    // TODO #11: Dispatch the AddAttempt action here, adding as parameter the current attempt
   }
 
   private sayGameOver() {
